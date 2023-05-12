@@ -1,0 +1,17 @@
+{
+    "name": "githen/laravel-common",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Githen\\LaravelCommon\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "githen",
+            "email": "githen@foxmail.com"
+        }
+    ],
+    "require": {}
+}
