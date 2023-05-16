@@ -7,11 +7,21 @@
             "Githen\\LaravelCommon\\": "src/"
         }
     },
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "githen",
             "email": "githen@foxmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "illuminate/support": "~6.20"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Githen\\LaravelCommon\\Providers\\DingdingProvider"
+            ]
+        }
+    }
 }
