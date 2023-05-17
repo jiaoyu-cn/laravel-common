@@ -53,7 +53,7 @@
 <body>
 <div class="menu">
     <div class="left">
-        <a target="_blank" href="/{{str_replace('{act}', 'ps',$uri)}}?key=laravel">查看进程</a>
+        <a target="_blank" href="/{{str_replace('{act}', 'ps',$uri)}}?key=artisan">查看进程</a>
         <a target="_blank" href="/{{str_replace('{act}', 'ls',$uri)}}?key=">查看目录</a>
         <a target="_blank" href="/{{str_replace('{act}', 'chown',$uri)}}?key=">修改权限</a>
         <a target="_blank" href="/{{str_replace('{act}', 'clean',$uri)}}?key=7">清理目录</a>

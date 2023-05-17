@@ -88,12 +88,12 @@ class LogController extends  Controller
      */
     private function ps(Request $request)
     {
-        $key = $request->input('key', 'laravel');
+        $key = $request->input('key', 'artisan');
         if (empty($key)){
             return response("输入错误", 500);
         }
 
-        $cmd = 'ps aux | grep -v grep | grep -e STARTED -e ' . $key;
+        $cmd = 'ps aux | grep -v grep | grep -e START -e ' . $key;
         exec($cmd, $out);
         array_unshift($out, '执行命令：'.$cmd."<br>");
 
@@ -122,7 +122,9 @@ class LogController extends  Controller
      */
     private function chown(Request $request)
     {
-        $key = $request->input('key', '');
+        if(! $key = $request->input('key', '')){
+            return response('请输入要修改的权限目录', 500);
+        }
         $dir = base_path($key);
 
         if (!is_file($dir) && !is_dir($dir)){
