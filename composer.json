@@ -1,5 +1,6 @@
 {
     "name": "githen/laravel-common",
+    "description": "基于Laravel的公用方法",
     "type": "library",
     "license": "MIT",
     "autoload": {

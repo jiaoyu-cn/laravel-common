@@ -125,7 +125,7 @@ class LogController extends  Controller
         if(! $key = $request->input('key', '')){
             return response('请输入要修改的权限目录', 500);
         }
-        $dir = base_path($key);
+        $dir = storage_path($key);
 
         if (!is_file($dir) && !is_dir($dir)){
             return response('文件/目录不存在', 500);

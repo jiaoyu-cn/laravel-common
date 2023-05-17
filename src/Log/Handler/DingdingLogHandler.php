@@ -42,6 +42,10 @@ class DingdingLogHandler extends AbstractProcessingHandler
      */
     public function write($record):void
     {
+        if (config('app.env') == 'local'){
+            return;
+        }
+
         // 组装消息结构
         $content = [
             'markdown' => [
