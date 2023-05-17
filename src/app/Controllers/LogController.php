@@ -150,7 +150,7 @@ class LogController extends  Controller
         }
 
         // 清理文件及目录
-        $cmd = 'find '.storage_path('logs') .' -type f -ctime +4 | grep -e "\.log" -e "\.sql"';
+        $cmd = 'find '.storage_path('logs') .' -type f -ctime +'.$key.' | grep -e "\.log" -e "\.sql"';
         exec($cmd, $out);
 
         if (count($out) == 0){
