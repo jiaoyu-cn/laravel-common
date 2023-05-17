@@ -5,7 +5,7 @@
 [![image](https://img.shields.io/github/forks/jiaoyu-cn/laravel-common)](https://github.com/jiaoyu-cn/laravel-common/network/members)
 [![image](https://img.shields.io/github/issues/jiaoyu-cn/laravel-common)](https://github.com/jiaoyu-cn/laravel-common/issues)
 
-##安装
+## 安装
 
 ```shell
 composer require githen/laravel-common:~v1.0.0
