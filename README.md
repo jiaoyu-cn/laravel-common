@@ -20,8 +20,9 @@ composer require githen/laravel-common:~v1.0.0
 调用方法
 ```php
 // token => ***  为钉钉群机器人的access_token
+// secret => ***  为钉钉群机器人的加签,不填则走关键词或IP
 // ->***()  ***为目前支持的方法，可参考接下文档
-app('jiaoyu.common.dingding', ['token' => '*****'])->***();
+app('jiaoyu.common.dingding', ['token' => '*****','secret' => '****'])->***();
 ```
 
 #### 发送消息信息
@@ -102,7 +103,7 @@ app('jiaoyu.common.dingding', ['token' => '*****'])->***();
         'dingding' => [
             'driver' => 'monolog',
             'level' => 'debug',
-            'with' => ['token' => '钉钉机器人的access_token'],
+            'with' => ['token' => '钉钉机器人的access_token','secret' => '不填则走关键词或IP'],
             'handler' => \Githen\LaravelCommon\Log\Handler\DingdingLogHandler::class
         ],
 ```
