@@ -13,6 +13,7 @@ class DingdingProvider extends ServiceProvider
 
     // 请求token
     public $accessToken = '';
+    public $secret = '';
 
     /**
      * 服务注册
@@ -32,6 +33,7 @@ class DingdingProvider extends ServiceProvider
         $this->app->singleton('jiaoyu.common.dingding', function ($app, $params = []){
             // 设置token值
             $this->accessToken = $params['token'] ?? '';
+            $this->secret = $params['secret'] ?? '';
             return $this;
         });
     }
@@ -187,8 +189,19 @@ class DingdingProvider extends ServiceProvider
             $message = json_encode($message, JSON_UNESCAPED_UNICODE);
         }
 
+        $url = $this->url.$this->accessToken;
+        // 加签
+        if ($this->secret){
+            $time = (int)round(microtime(true) * 1000);
+            $sign = $time . "\n" . $this->secret;
+            $sign = hash_hmac('SHA256',$sign, $this->secret,  true);
+
+            $sign = base64_encode( $sign);
+            $url .= '&timestamp='.$time.'&sign='.$sign;
+        }
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->url.$this->accessToken);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array ('Content-Type: application/json;charset=utf-8'));
