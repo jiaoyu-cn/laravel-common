@@ -12,7 +12,7 @@ class DingdingProvider extends ServiceProvider
     private $url = 'https://oapi.dingtalk.com/robot/send?access_token=';
 
     // 请求token
-    public $accessToken = '';
+    public $token = '';
     public $secret = '';
 
     /**
@@ -32,7 +32,7 @@ class DingdingProvider extends ServiceProvider
         // 注册签名方法
         $this->app->singleton('jiaoyu.common.dingding', function ($app, $params = []){
             // 设置token值
-            $this->accessToken = $params['token'] ?? '';
+            $this->token = $params['token'] ?? '';
             $this->secret = $params['secret'] ?? '';
             return $this;
         });
@@ -189,7 +189,7 @@ class DingdingProvider extends ServiceProvider
             $message = json_encode($message, JSON_UNESCAPED_UNICODE);
         }
 
-        $url = $this->url.$this->accessToken;
+        $url = $this->url.$this->token;
         // 加签
         if ($this->secret){
             $time = (int)round(microtime(true) * 1000);

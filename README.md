@@ -102,7 +102,7 @@ app('jiaoyu.common.dingding', ['token' => '*****'])->***();
         'dingding' => [
             'driver' => 'monolog',
             'level' => 'debug',
-            'with' => ['access_token' => '钉钉机器人的access_token'],
+            'with' => ['token' => '钉钉机器人的access_token'],
             'handler' => \Githen\LaravelCommon\Log\Handler\DingdingLogHandler::class
         ],
 ```

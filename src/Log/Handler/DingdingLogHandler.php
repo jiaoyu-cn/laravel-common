@@ -9,7 +9,8 @@ class DingdingLogHandler extends AbstractProcessingHandler
 {
 
     // 请求token
-    public $accessToken = '';
+    public $token = '';
+    public $secret = '';
 
     protected  $levels = [
         'DEBUG' => '中',
@@ -27,10 +28,11 @@ class DingdingLogHandler extends AbstractProcessingHandler
      * @param $level
      * @param bool $bubble
      */
-    public function __construct($level = Logger::DEBUG, bool $bubble = true, $access_token = '')
+    public function __construct($level = Logger::DEBUG, bool $bubble = true, $token = '', $secret = '')
     {
         // access_token
-        $this->accessToken = $access_token;
+        $this->token = $token;
+        $this->secret = $secret;
 
         parent::__construct($level, $bubble);
     }
@@ -81,7 +83,7 @@ class DingdingLogHandler extends AbstractProcessingHandler
         }
 
         // 发送到钉钉
-        app('jiaoyu.common.dingding', ['token' => $this->accessToken])->send($content);
+        app('jiaoyu.common.dingding', ['token' => $this->token, 'secret' => $this->secret])->send($content);
     }
 
 
