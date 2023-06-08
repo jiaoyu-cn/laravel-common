@@ -13,6 +13,31 @@ composer require githen/laravel-common:~v1.0.0
 
 ## 功能说明
 
+### 服务状态检测
+
+调用方法
+```php
+// token => ***  为钉钉群机器人的access_token
+// secret => ***  为钉钉群机器人的加签,不填则走关键词或IP
+// 以上两个参数可复用`logging.channels.dingding.with`中配置，可直接在`listen`方法中第二个参数为`true`即可。
+
+app('jiaoyu.common.process')->listen([
+'process' => [
+    'nginx' => 'Nginx服务', // key 为匹配关键词  name 为显示名称
+    'artisan,shixun' => '多层过滤' // key中,为多层过滤 a,b  => grep a | grep b
+    ],
+ 'token' => '***',
+ 'secret' => '***' 
+]);
+```
+
+可以在任务调度中直接使用
+```php
+ $schedule->call(function (){
+    app('jiaoyu.common.process')->listen(['process' => ['nginx' => 'nginx']], true);
+ })->everyFiveMinutes()->runInBackground();
+```
+
 ### 钉钉WebHook消息发送
 
 钉钉手册地址：[官方手册](https://open.dingtalk.com/document/orgapp/custom-robot-access)

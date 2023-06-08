@@ -21,7 +21,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Githen\\LaravelCommon\\Providers\\DingdingProvider"
+                "Githen\\LaravelCommon\\Providers\\DingdingProvider",
+                "Githen\\LaravelCommon\\Providers\\ProcessProvider"
             ]
         }
     }
