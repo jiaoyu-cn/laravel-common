@@ -53,11 +53,11 @@
 <body>
 <div class="menu">
     <div class="left">
-        <a target="_blank" href="/{{str_replace('{act}', 'ps',$uri)}}?key=artisan">查看进程</a>
-        <a target="_blank" href="/{{str_replace('{act}', 'ls',$uri)}}?key=">查看目录</a>
-        <a target="_blank" href="/{{str_replace('{act}', 'chown',$uri)}}?key=">修改权限</a>
-        <a target="_blank" href="/{{str_replace('{act}', 'clean',$uri)}}?key=7">清理目录</a>
-        <a target="_blank" href="/{{str_replace('{act}', 'phpinfo',$uri)}}">phpinfo</a>
+        <a target="_blank" href="/{{str_replace('{act?}', 'ps',$uri)}}?key=artisan">查看进程</a>
+        <a target="_blank" href="/{{str_replace('{act?}', 'ls',$uri)}}?key=">查看目录</a>
+        <a target="_blank" href="/{{str_replace('{act?}', 'chown',$uri)}}?key=">修改权限</a>
+        <a target="_blank" href="/{{str_replace('{act?}', 'clean',$uri)}}?key=7">清理目录</a>
+        <a target="_blank" href="/{{str_replace('{act?}', 'phpinfo',$uri)}}">phpinfo</a>
     </div>
 
     <div class="right">
@@ -77,9 +77,9 @@
             <dd>
                 <div class="name">{{$item->getFilename()}}</div>
                 <div class="option">
-                    <a target="_blank" href="/{{str_replace('{act}', 'download',$uri)}}?file={{$item->getRelativePathname()}}">查看</a>
-                    <a target="_blank" href="/{{str_replace('{act}', 'download',$uri)}}?file={{$item->getRelativePathname()}}&download=true">下载</a>
-                    <a href="/{{str_replace('{act}', 'download',$uri)}}?file={{$item->getRelativePathname()}}&remove=true">删除</a>
+                    <a target="_blank" href="/{{str_replace('{act?}', 'download',$uri)}}?file={{$item->getRelativePathname()}}">查看</a>
+                    <a target="_blank" href="/{{str_replace('{act?}', 'download',$uri)}}?file={{$item->getRelativePathname()}}&download=true">下载</a>
+                    <a href="/{{str_replace('{act?}', 'download',$uri)}}?file={{$item->getRelativePathname()}}&remove=true">删除</a>
                 </div>
 
             </dd>

@@ -38,6 +38,13 @@ app('jiaoyu.common.process')->listen([
  })->everyFiveMinutes()->runInBackground();
 ```
 
+### 执行SQL
+
+可在路由配置中添加以下配置，完成SQL操作的控制器注入，并可通过访问` http://host/sql/` 来访问。
+```php
+Route::match(['get', 'post'], 'sql/{act?}', '\\Githen\\LaravelCommon\\App\\Controllers\\SqlController@act')->name('sql.act');
+```
+
 ### 钉钉WebHook消息发送
 
 钉钉手册地址：[官方手册](https://open.dingtalk.com/document/orgapp/custom-robot-access)
@@ -144,5 +151,5 @@ app('jiaoyu.common.dingding', ['token' => '*****','secret' => '****'])->***();
 // log/{act} 中 log关键字可自定义，{act}不可修改
 // 路由名可随意修改
 
-Route::get('log/{act}', '\\Githen\\LaravelCommon\\App\\Controllers\\LogController@act')->name('log.act');
+Route::get('log/{act?}', '\\Githen\\LaravelCommon\\App\\Controllers\\LogController@act')->name('log.act');
 ```
