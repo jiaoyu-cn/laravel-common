@@ -81,7 +81,7 @@ class ProcessProvider extends ServiceProvider
         $tmpKey = explode(',', $key);
         $tmpKey = "grep '". implode("' | grep '", $tmpKey) ."'";
 
-        exec('ps aux | grep -v grep | '.$tmpKey, $output);
+        exec('ps awwx | grep -v grep | '.$tmpKey, $output);
 
         // 存活
         if (count($output) > 0){
