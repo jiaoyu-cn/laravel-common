@@ -111,12 +111,6 @@ eolDatatable.prototype = {
                             if (tmpData[i].name === name && tmpData[i].name.indexOf('[]') === -1){
                                 tmpData[i].value = value;
                                 return;
-
-                                if (typeof tmpData[i].value == "string") tmpData[i].value = value;
-                                // order
-                                if (typeof tmpData[i].value == "object") Object.assign(tmpData[i].value, value);
-
-                                return;
                             }
                         }
                         tmpData.push({name:name, value:value});
