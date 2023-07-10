@@ -40,10 +40,12 @@ app('jiaoyu.common.process')->listen([
 
 ### 执行SQL
 
-可在路由配置中添加以下配置，完成SQL操作的控制器注入，并可通过访问` http://host/sql/` 来访问。
+添加路由
 ```php
 Route::match(['get', 'post'], 'sql/{act?}', '\\Githen\\LaravelCommon\\App\\Controllers\\SqlController@act')->name('sql.act');
 ```
+1. 可在路由配置中添加以下配置，完成SQL操作的控制器注入，并可通过访问` http://host/sql/` 来执行。
+2. 可查看当前配置的数据库连通情况（暂只支持 `mysql`,`mongo`,`redis`），通过访问` http://host/sql/check` 来查看
 
 ### 钉钉WebHook消息发送
 

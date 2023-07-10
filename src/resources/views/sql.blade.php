@@ -79,6 +79,7 @@
 <div class="menu">
     <div class="left">
         <a target="_blank" href="/{{str_replace('{act?}', 'mysql',$uri)}}">MySQL</a>
+        <a target="_blank" href="/{{str_replace('{act?}', 'check',$uri)}}">连接测试</a>
     </div>
 
     <div class="right">
