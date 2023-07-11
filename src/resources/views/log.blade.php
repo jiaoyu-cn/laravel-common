@@ -25,7 +25,7 @@
             float: right;
         }
         dt{
-            background-color: #ffb07c;
+            background-color: rgba(246, 162, 118, 0.76);
             margin: 5px;
             padding: 5px;
             width: 1008px;
@@ -39,6 +39,9 @@
 
         dl dd:nth-child(even){
             background-color: #e3f2fd;
+        }
+        dl dd:hover{
+            background-color: #b9d9f6;
         }
         .name {
             font-weight: bold;
@@ -100,7 +103,7 @@
 
     // dt中节点处理
     $('dt').on('click', function (){
-        $(this).closest('dl').find('dd').toggle('slow');
+        $(this).closest('dl').find('dd').toggle();
     });
 
     // 修改长度
