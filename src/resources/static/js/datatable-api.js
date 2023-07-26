@@ -277,6 +277,11 @@ eolDatatable.prototype = {
             // 渲染按钮
             buttons.sort(function (a,b){return a.sort-b.sort});
             buttons.map((item, index) => {
+                // 添加默认值
+                if (typeof item.kind === "undefined") {
+                    item.kind = 'button';
+                }
+
                 // 按钮检测
                 if (item.kind === 'button' && (item['id'] === undefined || item['method'] === undefined ||
                     item['url'] === undefined || item['callback'] === undefined)){
