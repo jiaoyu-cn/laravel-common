@@ -279,7 +279,7 @@ eolDatatable.prototype = {
             buttons.map((item, index) => {
                 // 添加默认值
                 if (typeof item.kind === "undefined") {
-                    item.kind = 'button';
+                    buttons[index]['kind'] = item.kind = 'button';
                 }
 
                 // 按钮检测
