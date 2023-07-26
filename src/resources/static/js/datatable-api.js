@@ -298,7 +298,7 @@ eolDatatable.prototype = {
                 if (item.cover === undefined) item.cover = true;
                 if (item.confirmText === undefined) item.confirmText = item.text + '选中{length}条记录？';
                 if (item.param === undefined) item.param = false;
-                if (item.nocheck === undefined) item.nocheck = true;
+                if (item.check === undefined) item.check = true;
 
                 // 添加按钮
                 let aTag = document.createElement('a');
@@ -315,7 +315,7 @@ eolDatatable.prototype = {
                     let index = $(this).data('index');
                     let curButton = buttons[index];
                     let data = objectParent.getSelected();
-                    if (data.length <= 0 && curButton.nocheck) {
+                    if (data.length <= 0 && curButton.check) {
                         eolWarning(curButton.requireMessage);
                         return;
                     }
