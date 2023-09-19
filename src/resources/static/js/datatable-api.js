@@ -457,6 +457,29 @@ eolDatatable.prototype = {
                     }, 'delete', url.origin + url.pathname + '/' + ids.toString() + '?format=json' + url.search.replaceAll('?', '&'));
                 });
             }
+            // 跳转到指定页码
+            if (objectParent.getConfig("gotoPageNum")) {
+                let tableId = $(this).attr('id');
+                let pageDiv = $('#' + tableId + '_length');
+                pageDiv.append(
+                    ' | 跳转到 <input type="number" min="1" id="' + tableId + '_gotoPage" value="" style="width: 70px;display: inline;" class="form-control form-control-sm" /> ' +
+                    '<a class="paginate_button" id="' + tableId + '_goto" aria-controls="' + tableId + '" tabindex="0" >确定</a>');
+                //绑定事件
+                $('#' + tableId + '_goto').click(function (obj) {
+                    let jumpPage = $('#' + tableId + '_gotoPage').val();
+                    if (jumpPage.length === 0) {
+                        return;
+                    }
+                    let currPage = parseInt(jumpPage) - 1;
+                    let maxPage = objectParent.getDatatable().page.info().pages;
+                    if (currPage <= 0) {
+                        currPage = 0;
+                    } else if (currPage >= maxPage) {
+                        currPage = maxPage - 1;
+                    }
+                    objectParent.getDatatable().page(currPage).draw('page');
+                })
+            }
         }
 
     },
@@ -474,7 +497,7 @@ eolDatatable.prototype = {
     },
     setSetting: function () {
         var fields = ['ajax', 'columns', 'paging', 'processing', 'serverSide', 'pageLength', 'ajax.url','ajax.type', 'ajax.data', 'dom', 'select',
-            'stateSave', 'ordering', 'stateLoaded'];
+            'stateSave', 'ordering', 'stateLoaded', 'pagingType'];
 
         for (k in fields) {
             val = this.getConfig(fields[k]);
