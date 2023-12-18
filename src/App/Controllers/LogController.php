@@ -54,14 +54,14 @@ class LogController extends  Controller
     private function download(Request $request)
     {
         // 检测文件是否存在
-        $file = 'logs/'.$request->input('file', 'xxx***');
-        if (! Storage::exists($file)){
+        $file = storage_path('logs/'.$request->input('file', 'xxx***'));
+        if (! is_file($file)){
             return response('文件不存在', 404);
         }
 
         // 删除日志
         if ($request->input('remove') == 'true'){
-            if(! Storage::delete($file)){
+            if(! unlink($file)){
                 return response('文件删除失败', 404);
             }
             return redirect()->route(Route::current()->getName(), ['act' => 'index']);
@@ -69,12 +69,12 @@ class LogController extends  Controller
 
         // 下载日志
         if ($request->input('download') == 'true'){
-            return response()->download(Storage::path($file));
+            return response()->download($file);
         }
 
         // 查看日志
         echo '<pre>';
-        $handle = fopen(Storage::path($file), 'r');
+        $handle = fopen($file, 'r');
         while (feof($handle) === false) {
             echo fgets($handle);
         }
