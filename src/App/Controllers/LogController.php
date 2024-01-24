@@ -127,7 +127,7 @@ class LogController extends  Controller
         if (strpos($systemInfo, 'Darwin') !== false) {
             $cmd = 'top -l 1 ' . $key;
         }else{
-            $cmd = 'top -bn 1 ' . $key;
+            $cmd = 'top -bcn 1 -w 600' . $key;
         }
         exec($cmd, $out);
         array_unshift($out, '执行命令：'.$cmd."<br>");
