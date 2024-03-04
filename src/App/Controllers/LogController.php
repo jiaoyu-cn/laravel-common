@@ -116,6 +116,26 @@ class LogController extends  Controller
     }
 
     /**
+     * 性能分析
+     * @param Request $request
+     * @return string
+     */
+    private function top(Request $request)
+    {
+        $key = $request->input('key', '');
+        $systemInfo = php_uname('s');
+        if (strpos($systemInfo, 'Darwin') !== false) {
+            $cmd = 'top -l 1 ' . $key;
+        }else{
+            $cmd = 'top -bcn 1 -w 600' . $key;
+        }
+        exec($cmd, $out);
+        array_unshift($out, '执行命令：'.$cmd."<br>");
+
+        return '<pre>'.implode('<br>', $out);
+    }
+
+    /**
      * 修改文件/目录权限
      * @param Request $request
      * @return string
