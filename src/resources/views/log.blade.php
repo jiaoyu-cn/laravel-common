@@ -78,7 +78,7 @@
             <div class="right"> {{count($items)}} 个 </div>
         </dt>
         @foreach($items->sortByDesc(function ($v,$k){return $v->getRelativePathname();}) as $item )
-            <dd style="display:none;">
+            <dd>
                 <div class="name">{{$item->getFilename()}}</div>
                 <div class="option">
                     <a target="_blank" href="/{{str_replace('{act?}', 'download',$uri)}}?file={{$item->getRelativePathname()}}">查看</a>
@@ -115,6 +115,9 @@
         });
         $(this).find('dd div.name').width((tmpWidth + 20) + 'px');
     });
+
+    logShow(false);
+
 </script>
 </body>
 </html>
