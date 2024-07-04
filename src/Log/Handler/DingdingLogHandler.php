@@ -62,6 +62,7 @@ class DingdingLogHandler extends AbstractProcessingHandler
         $content['markdown']['text'] .= '------'.PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '**项目名称:** '.config('settings.name').PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '**域名:** '.config('app.url').PHP_EOL.PHP_EOL;
+        $content['markdown']['text'] .= '**服务器IP:** '.request()->server('SERVER_ADDR').PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '**告警等级:** '.$record['level_name'].PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '**告警信息:** '.$record['message'].PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '**告警时间:** '.$record['datetime']->format('Y-m-d H:i:s').PHP_EOL.PHP_EOL;
@@ -81,6 +82,7 @@ class DingdingLogHandler extends AbstractProcessingHandler
             $content['markdown']['text'] .= ' > **告警信息：** '.$exception->getMessage().PHP_EOL.PHP_EOL;
             $content['markdown']['text'] .= ' > **告警文件：** '.str_replace(base_path(''), '', $exception->getFile()).'('.$exception->getLine().')'.PHP_EOL.PHP_EOL;
         }
+        dd($content);
 
         // 发送到钉钉
         app('jiaoyu.common.dingding', ['token' => $this->token, 'secret' => $this->secret])->send($content);
