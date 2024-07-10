@@ -76,10 +76,10 @@ class DingdingLogHandler extends AbstractProcessingHandler
             $content['markdown']['text'] .= '------'.PHP_EOL.PHP_EOL;
             $content['markdown']['text'] .= '**报错详情:** '.PHP_EOL.PHP_EOL;
 
-            // 获取最近的异常
+            // 获取最近的异常,排除vendor目录文件
             $traceTree = $exception->getTrace();
             while ($tmpTrace = array_shift($traceTree)){
-                if (strpos($tmpTrace['file']??'', 'autorun')){
+                if (false === strpos($tmpTrace['file']??'', '/vendor/')){
                     $trace = $tmpTrace;
                     break;
                 }
