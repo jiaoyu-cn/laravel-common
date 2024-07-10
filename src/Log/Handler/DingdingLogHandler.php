@@ -59,9 +59,7 @@ class DingdingLogHandler extends AbstractProcessingHandler
         ];
 
         // 获取服务器ip
-        if ($ip = gethostname()) {
-            $ip = gethostbyname($ip);
-        }
+        if ($ip = gethostname()) $ip = gethostbyname($ip);
 
         $content['markdown']['text'] = '#### 【'.($this->levels[$record['level_name']]??'未知').'】服务告警 - '.config('app.env').PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '------'.PHP_EOL.PHP_EOL;
@@ -79,8 +77,15 @@ class DingdingLogHandler extends AbstractProcessingHandler
             $content['markdown']['text'] .= '**报错详情:** '.PHP_EOL.PHP_EOL;
 
             // 获取最近的异常
-            $trace = $exception->getTrace();
-            $trace = array_shift($trace);
+            $traceTree = $exception->getTrace();
+            while ($tmpTrace = array_shift($traceTree)){
+                if (strpos($tmpTrace['file']??'', 'autorun')){
+                    $trace = $tmpTrace;
+                    break;
+                }
+                if (empty($trace)) $trace = $tmpTrace;
+            }
+
             if (!empty($trace['args'][4]['request'])){
                 $content['markdown']['text'] .= ' > **请求地址：** '.$trace['args'][4]['request']->fullurl().PHP_EOL.PHP_EOL;
             }
