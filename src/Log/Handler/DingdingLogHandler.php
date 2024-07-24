@@ -79,7 +79,7 @@ class DingdingLogHandler extends AbstractProcessingHandler
             // 获取最近的异常,排除vendor目录文件
             $traceTree = $exception->getTrace();
             while ($tmpTrace = array_shift($traceTree)){
-                if (false === strpos($tmpTrace['file']??'', '/vendor/') && false === strpos($tmpTrace['file']??'', 'DingdingProvider.php') ){
+                if (false === strpos($tmpTrace['file']??'', '/vendor/')){
                     $trace = $tmpTrace;
                     break;
                 }

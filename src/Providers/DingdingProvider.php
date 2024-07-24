@@ -213,6 +213,6 @@ class DingdingProvider extends ServiceProvider
         $data = curl_exec($ch);
         $data = json_decode($data, true);
         curl_close($ch);
-        return ['code' => $data['errcode'], 'message' => $data['errmsg']];
+        return ['code' => $data['errcode']??'-1', 'message' => $data['errmsg']??'请求机器人失败'];
     }
 }
