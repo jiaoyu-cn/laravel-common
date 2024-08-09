@@ -75,7 +75,7 @@ class SqlController extends  Controller
             if (isset($config['driver']) && $config['driver'] == 'mysql'){
                 try {
                     $database = DB::connection(str_replace('connections.', '', $key))->getPdo();
-                    $serverVersion =  $database->getServerVersion();
+                    $serverVersion =  $database->getAttribute(\PDO::ATTR_SERVER_VERSION);
                 }catch (\Exception $e){
                     return response()->json(['code' => 1, 'message' => $e->getMessage()]);
                 }
