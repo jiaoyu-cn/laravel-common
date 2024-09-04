@@ -90,7 +90,7 @@ class DingdingLogHandler extends AbstractProcessingHandler
                 $content['markdown']['text'] .= ' > **请求地址：** '.$trace['args'][4]['request']->fullurl().PHP_EOL.PHP_EOL;
             }
             $content['markdown']['text'] .= ' > **告警信息：** '.$exception->getMessage().PHP_EOL.PHP_EOL;
-            $content['markdown']['text'] .= ' > **告警文件：** '.str_replace(base_path(''), '', $exception->getFile()).'('.$exception->getLine().')'.PHP_EOL.PHP_EOL;
+            $content['markdown']['text'] .= ' > **告警文件：** '.str_replace(base_path(''), '', $trace['file']??$exception->getFile()).'('.$trace['line']??$exception->getLine()().')'.PHP_EOL.PHP_EOL;
         }
 
         // 发送到钉钉
