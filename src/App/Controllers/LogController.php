@@ -134,7 +134,20 @@ class LogController extends Controller
 
         return '<pre>' . implode('<br>', $out);
     }
+    /**
+     * 查看磁盘
+     * @param Request $request
+     * @return string
+     */
+    private function df(Request $request)
+    {
+        $cmd = 'df -h ';
+       
+        exec($cmd, $out);
+        array_unshift($out, '执行命令：' . $cmd . "<br>");
 
+        return '<pre>' . implode('<br>', $out);
+    }
     /**
      * 修改文件/目录权限
      * @param Request $request
