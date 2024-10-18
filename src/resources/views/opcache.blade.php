@@ -77,8 +77,8 @@
         @foreach($opcache_status['scripts']??[] as $k => $v)
             <tr>
                 <td><a href="javascript:;" onclick="opcache('/{{str_replace('{act?}', 'opcache?type=clear_file&file='.urlencode($v['full_path']),$uri)}}')">清除缓存</a></td>
-                <td>{{date("Y-m-d H:i:s", $v['timestamp'])}}</td>
-                <td>{{date("Y-m-d H:i:s", $v['last_used_timestamp'])}}</td>
+                <td>{{!empty($v['timestamp'])?date("Y-m-d H:i:s", $v['timestamp']):'-'}}</td>
+                <td>{{!empty($v['last_used_timestamp'])?date("Y-m-d H:i:s", $v['last_used_timestamp']):'-'}}</td>
                 <td>{{$v['hits']}}</td>
                 <td>{{round($v['memory_consumption']/1024, 2)}}</td>
                 <td title="{{$k}}" style=""><code>{{$k}}</code></td>
