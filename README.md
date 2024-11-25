@@ -155,3 +155,15 @@ app('jiaoyu.common.dingding', ['token' => '*****','secret' => '****'])->***();
 
 Route::get('log/{act?}', '\\Githen\\LaravelCommon\\App\\Controllers\\LogController@act')->name('log.act');
 ```
+### SSL证书到期检测
+
+注：以定时任务每天进行触发，通知规则为离过期还有7天以内时，每天发送钉钉通知；若7-30天时则每周一发送通知。
+
+调用方法
+```php
+// $param['dir'] => '/...'  需要检测的证书的绝对地址
+// $param['token'] => ***  为钉钉群机器人的access_token,不填走默认配置：logging.channels.dingding.with.token
+// $param['secret'] => ***  为钉钉群机器人的加签,不填则走关键词或IP
+// $isDing => true/false  快到期时是否发送钉钉群通知，true发送，false不发送
+app('jiaoyu.common.process')->ssl(['dir' => $dir, 'token' => $token, 'secret' => $secret], $isDing);
+```

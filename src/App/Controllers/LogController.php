@@ -142,7 +142,7 @@ class LogController extends Controller
     private function df(Request $request)
     {
         $cmd = 'df -h ';
-       
+
         exec($cmd, $out);
         array_unshift($out, '执行命令：' . $cmd . "<br>");
 
