@@ -20,7 +20,7 @@ class Chart extends \PhpOffice\PhpWord\Writer\Word2007\Part\Chart
      * @var array
      */
     private $types = [
-        'pie' => ['type' => 'pie', 'colors' => 1],
+        'pie' => ['type' => 'pie', 'colors' => 1, 'explosion' => 1], //TODO 增加饼图分离
         'doughnut' => ['type' => 'doughnut', 'colors' => 1, 'hole' => 75, 'no3d' => true],
         'bar' => ['type' => 'bar', 'colors' => 0, 'axes' => true, 'bar' => 'bar', 'grouping' => 'clustered'],
         'stacked_bar' => ['type' => 'bar', 'colors' => 0, 'axes' => true, 'bar' => 'bar', 'grouping' => 'stacked'],
@@ -207,6 +207,21 @@ class Chart extends \PhpOffice\PhpWord\Writer\Word2007\Part\Chart
             $xmlWriter->writeElementBlock('c:idx', 'val', $index);
             $xmlWriter->writeElementBlock('c:order', 'val', $index);
 
+            // TODO 添加图分离
+            if (!empty($this->options['explosion'])){
+                $xmlWriter->writeElementBlock('c:explosion', 'val', $this->options['explosion']);
+            }
+
+            // TODO: 设置Legend颜色
+            $xmlWriter->startElement('c:spPr');
+            $xmlWriter->startElement('a:solidFill');
+            $xmlWriter->startElement('a:srgbClr');
+            $xmlWriter->writeAttribute('val', $colors[$colorIndex % count($colors)]);
+            $xmlWriter->writeElementBlock('a:alpha', 'val', 80000);
+            $xmlWriter->endElement(); // a:srgbClr
+            $xmlWriter->endElement(); // a:solidFill
+            $xmlWriter->endElement(); // c:spPr
+
             if (null !== $seriesItem['name'] && $seriesItem['name'] != '') {
                 $xmlWriter->startElement('c:tx');
                 $xmlWriter->startElement('c:strRef');
@@ -254,7 +269,13 @@ class Chart extends \PhpOffice\PhpWord\Writer\Word2007\Part\Chart
                         $xmlWriter->writeElementBlock('c:idx', 'val', $valueIndex);
                         $xmlWriter->startElement('c:spPr');
                         $xmlWriter->startElement('a:solidFill');
-                        $xmlWriter->writeElementBlock('a:srgbClr', 'val', $colors[$colorIndex++ % count($colors)]);
+                        $xmlWriter->startElement('a:srgbClr');
+                        // TODO 统一同一维度的颜色相同
+                        if (count($series) == 1) $colorIndex++;
+                        $xmlWriter->writeAttribute('val', $colors[$colorIndex % count($colors)]);
+                        $xmlWriter->writeElementBlock('a:alpha', 'val', '80000');
+
+                        $xmlWriter->endElement(); // a:srgbClr
                         $xmlWriter->endElement(); // a:solidFill
                         $xmlWriter->endElement(); // c:spPr
                         $xmlWriter->endElement(); // c:dPt
@@ -265,6 +286,7 @@ class Chart extends \PhpOffice\PhpWord\Writer\Word2007\Part\Chart
 
             $xmlWriter->endElement(); // c:ser
             ++$index;
+            if (count($series) > 1) $colorIndex = $index;
         }
     }
 
@@ -360,7 +382,21 @@ class Chart extends \PhpOffice\PhpWord\Writer\Word2007\Part\Chart
             $xmlWriter->writeElementBlock('c:crosses', 'val', 'autoZero');
         }
         if (isset($this->options['radar']) || ($type == 'cat' && $style->showGridX()) || ($type == 'val' && $style->showGridY())) {
-            $xmlWriter->writeElement('c:majorGridlines');
+//            $xmlWriter->writeElement('c:majorGridlines');
+            // TODO 增加坐标轴的透明度
+            $xmlWriter->startElement('c:majorGridlines');
+            $xmlWriter->startElement('c:spPr');
+            $xmlWriter->startElement('a:ln');
+            $xmlWriter->startElement('a:solidFill');
+            $xmlWriter->startElement('a:schemeClr');
+            $xmlWriter->writeAttribute('val', 'bg1');
+            $xmlWriter->writeElementBlock('a:lumMod', 'val', '85000');
+            $xmlWriter->writeElementBlock('a:alpha', 'val', '50000');
+            $xmlWriter->endElement(); // a:schemeClr
+            $xmlWriter->endElement(); // a:solidFill
+            $xmlWriter->endElement(); // a:ln
+            $xmlWriter->endElement(); // c:spPr
+            $xmlWriter->endElement(); // c:majorGridlines
         }
 
         $xmlWriter->startElement('c:scaling');
@@ -384,7 +420,14 @@ class Chart extends \PhpOffice\PhpWord\Writer\Word2007\Part\Chart
         $xmlWriter->startElement('c:spPr');
         $xmlWriter->startElement('a:ln');
         if ($line === true) {
-            $xmlWriter->writeElement('a:solidFill');
+//            $xmlWriter->writeElement('a:solidFill');
+//          TODO: 添加X,Y轴线的透明度
+            $xmlWriter->startElement('a:solidFill');
+            $xmlWriter->startElement('a:schemeClr');
+            $xmlWriter->writeAttribute('val', 'tx1');
+            $xmlWriter->writeElementBlock('a:alpha', 'val', '20000');
+            $xmlWriter->endElement(); // a:schemeClr
+            $xmlWriter->endElement(); // a:schemeClr
         } else {
             $xmlWriter->writeElement('a:noFill');
         }
