@@ -246,6 +246,11 @@ class Chart extends \PhpOffice\PhpWord\Writer\Word2007\Part\Chart
                 $xmlWriter->writeElementBlock("c:{$option}", 'val', (int) $val);
             }
 
+            // TODO ，饼图设置居中
+            if ($this->element->getType() == 'pie'){
+                $xmlWriter->writeElementBlock("c:dLblPos", 'val','ctr');
+            }
+
             $xmlWriter->endElement(); // c:dLbls
 
             if (isset($this->options['scatter'])) {
