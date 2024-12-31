@@ -167,3 +167,109 @@ Route::get('log/{act?}', '\\Githen\\LaravelCommon\\App\\Controllers\\LogControll
 // $isDing => true/false  快到期时是否发送钉钉群通知，true发送，false不发送
 app('jiaoyu.common.process')->ssl(['dir' => $dir, 'token' => $token, 'secret' => $secret], $isDing);
 ```
+### PHPWord生成docx文档
+
+调整了PHPWord中`TemplateProcessor`生成图的一些样式问题，[官方文档](https://phpoffice.github.io/PHPWord/index.html)测试代码如下：
+```php
+use Githen\LaravelCommon\Extend\PHPWord\TemplateProcessor;
+
+// $docFile 为模板docx文件
+$templateProcessor = new TemplateProcessor($docFile);
+//替换单个变量
+$templateProcessor->setValue('name', 'aaa');
+// 批量替换变量
+$templateProcessor->setValues([
+    // 汇总数据
+    'name' => '周报', // 名称
+    'dateLoop' => date('Y-m-d',strtotime('-7 days')).'~'.date('Y-m-d'), // 巡检周期
+]);
+
+// 图表测试数据
+$categories = array('网站', '微信', '微博', '百家号', '头条');
+// 文章总数
+$series1 = array(10, 30, 20, 50, 40);
+// 风险数
+$series2 = array(1, 13, 12, 5, 34);
+
+// 柱状图
+$chart = new Chart('column',$categories, $series1,null,'文章总数'); // 创建时需要给默认数据
+$chart->getStyle()
+    ->setWidth(Converter::inchToEmu(6)) // 设置图宽
+    ->setHeight(Converter::inchToEmu(3)) // 设置图高
+    ->setShowAxisLabels(true) // 显示坐标标签
+    ->setColors(['00B0F0','92D050']) // 设置颜色，循环展示
+    ->setShowLegend(true) // 显示图例
+    ->setLegendPosition('b') // 图例位置 
+    ->setShowGridY(true) // 展示Y轴参考线
+    ->setDataLabelOptions(['showCatName' => false]); // 柱状图不展示名称
+$chart->addSeries($categories, $series2, '风险文章数'); // 添加第二组数据
+$templateProcessor->setChart('articleChartBar', $chart); // 将图添加到文档中
+
+// 饼图，只支持一组数据
+$chart1 = new Chart('pie',$categories, $series1,null,'文章总数');
+$chart1->getStyle()
+    ->setWidth(Converter::inchToEmu(6))
+    ->setHeight(Converter::inchToEmu(3))
+    ->setShowAxisLabels(true)
+    ->setColors(['00B0F0','92D050','ff0000','00ff00','0000ff'])
+    ->setShowLegend(true)
+    ->setLegendPosition('b')
+    ->setShowGridY(true)
+    ->setDataLabelOptions(['showCatName' => false]);
+$templateProcessor->setChart('articleChartPie', $chart1);
+
+
+// 表格渲染
+$testData = [
+    ['tableType' => '网站', 'point' => '12','articleT' => 10],
+    ['tableType' => '网站', 'point' => '12','articleT' => 10],
+    ['tableType' => '网站', 'point' => '12','articleT' => 10],
+    ['tableType' => '网站', 'point' => '12','articleT' => 10],
+    ['tableType' => '', 'point' => '总计','articleT' => 10],
+];
+$templateProcessor->cloneRowAndSetValues('tableType', $testData);
+
+// 区块渲染，PHPWord中块渲染只支持文本
+$chineseNumbers = ['','一', '二', '三', '四', '五', '六', '七', '八', '九'];
+$testData =[
+    '一类' => ['一类1' => ['risk' => 130, 'suspect' => 20], '一类2' => ['risk' => 30, 'suspect' => 20]],
+    '二类' => ['二类1' => ['risk' => 230, 'suspect' => 20], '二类2' => ['risk' => 40, 'suspect' => 20]],
+    '三类' => ['三类1' => ['risk' => 330, 'suspect' => 20], '三类2' => ['risk' => 30, 'suspect' => 20]],
+];
+// 不存在图，只有纯文本，未处理数据，只关注参数
+$templateProcessor->cloneBlock('riskDetail',count($testData), true, false, $testData);
+
+
+//存在图则需要先生成重复的块代码，再执行替换
+$templateProcessor->cloneBlock('riskDetail',count($testData), true, true);
+$detailData = [];
+$maxText = [];
+
+$i = 1;
+$max = 0;
+foreach ($testData as $name => $detail){
+    $detailText = [];
+    foreach ($detail as $type => $tmp){
+        $detailText[] = $type."风险{$tmp['risk']}个，包括疑似风险{$tmp['suspect']}个";
+        if ($max <= $tmp['risk']){
+            $max = $tmp['risk'];
+            if($max == $tmp) $maxText[] = $type;
+            else $maxText = [$type];
+        }
+    }
+
+    $templateProcessor->setValue('riskIndex#'.$i, $chineseNumbers[$i]);
+    $templateProcessor->setValue('riskName#'.$i, $name);
+    $templateProcessor->setValue('riskCount#'.$i, count($detail));
+    $templateProcessor->setValue('riskMax#'.$i, implode("、",$maxText));
+    $templateProcessor->setValue('riskText#'.$i, implode(";",$detailText));
+    $templateProcessor->setChart('riskChart#'.$i, $chart);
+
+    $i++;
+}
+
+//  保存文件
+$templateProcessor->saveAs( storage_path('sample.docx'));
+
+
+```
