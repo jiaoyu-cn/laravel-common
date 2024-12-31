@@ -5,6 +5,7 @@ namespace Githen\LaravelCommon\Extend\PHPWord;
 use Githen\LaravelCommon\Extend\PHPWord\Writer\Word2007\Part\Chart;
 use PhpOffice\PhpWord\Shared\XMLWriter;
 use PhpOffice\PhpWord\Element\AbstractElement;
+use PhpOffice\PhpWord\Shared\Text;
 
 class TemplateProcessor extends \PhpOffice\PhpWord\TemplateProcessor
 {
@@ -45,5 +46,15 @@ class TemplateProcessor extends \PhpOffice\PhpWord\TemplateProcessor
 
         // Place it in the template
         $this->replaceXmlBlock($search, '<w:p>' . $xmlWriter->getData() . '</w:p>', 'w:p');
+    }
+
+    /**
+     * @param ?string $subject
+     *
+     * @return string
+     */
+    protected static function ensureUtf8Encoded($subject)
+    {
+        return $subject !== null ? Text::toUTF8($subject) : '';
     }
 }
