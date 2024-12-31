@@ -242,14 +242,15 @@ class Chart extends \PhpOffice\PhpWord\Writer\Word2007\Part\Chart
             // This section needs to be made configurable before a pull request is made
             $xmlWriter->startElement('c:dLbls');
 
-            foreach ($style->getDataLabelOptions() as $option => $val) {
-                $xmlWriter->writeElementBlock("c:{$option}", 'val', (int) $val);
-            }
-
             // TODO ，饼图设置居中
             if ($this->element->getType() == 'pie'){
                 $xmlWriter->writeElementBlock("c:dLblPos", 'val','ctr');
             }
+
+            foreach ($style->getDataLabelOptions() as $option => $val) {
+                $xmlWriter->writeElementBlock("c:{$option}", 'val', (int) $val);
+            }
+
 
             $xmlWriter->endElement(); // c:dLbls
 
