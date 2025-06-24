@@ -73,12 +73,19 @@ class LogController extends Controller
         }
 
         // 查看日志
-        echo '<pre>';
-        $handle = fopen($file, 'r');
-        while (feof($handle) === false) {
-            echo fgets($handle);
-        }
-        fclose($handle);
+        $readFile = function ()use($file){
+            $handle = fopen($file, 'r');
+            while (feof($handle) === false) {
+                echo fread($handle, 1024 * 1024);;
+                ob_flush();
+                flush();
+            }
+            fclose($handle);
+        };
+
+        return response()->stream($readFile, 200, [
+            "Content-Type" => "text/plain; charset=UTF-8",
+        ]);
     }
 
     /**
@@ -199,7 +206,7 @@ class LogController extends Controller
 
         array_unshift($out, '执行命令：' . $cmd . "<br>", '删除文件如下：<br>');
 
-        return '<pre>' . implode('<br>', $out);
+        return response('<pre>' . implode('<br>', $out));
     }
 
     /**
