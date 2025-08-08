@@ -160,7 +160,7 @@ class LogController extends Controller
      * @param Request $request
      * @return string
      */
-    private function chown(Request $request)
+    private function chmod(Request $request)
     {
         if (!$key = $request->input('key', '')) {
             return response('请输入要修改的权限目录', 500);
@@ -171,7 +171,7 @@ class LogController extends Controller
             return response('文件/目录不存在', 500);
         }
 
-        $cmd = 'chown -R 0770 ' . $dir;
+        $cmd = 'chmod -R 0770 ' . $dir;
         exec($cmd, $out);
         array_unshift($out, '执行命令：' . $cmd . "<br>");
 
