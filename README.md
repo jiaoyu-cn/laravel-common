@@ -277,17 +277,37 @@ $templateProcessor->saveAs( storage_path('sample.docx'));
 ### 清除Opcache缓存
 1. 添加清理路由
 ```php
+//路由名称及协议不可变
 Route::get('opcache/clear', '\\Githen\\LaravelCommon\\App\\Controllers\\OpcacheController@clear')->name('opcache.clear');
 ```
+2.注册命令
 
-2. 部署时执行
+```php
+// laravel6
+// 在app/Console/Kernel.php的$commands中添加引用
+use Githen\LaravelCommon\Commands\OpcacheClear;
+protected $commands = [
+    OpcacheClear::class,
+];
+
+// laravel11
+// 在bootstrap/app.php文件的withCommands中添加引用
+use Githen\LaravelCommon\Commands\OpcacheClear;
+
+ ->withCommands([
+        OpcacheClear::class,
+    ])
+
+```
+
+3. 部署时执行
 在composer.json中添加执行脚本,Host为本项目的名称，`http://127.0.0.1` 域名不可替换,协议根据实际情况调整
 ```json
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "curl -H 'Host: bk-oa.cn' http://127.0.0.1/opcache/clear"
+            "@php artisan jiaoyu:opcache-clear"
         ]
     }
 ```
