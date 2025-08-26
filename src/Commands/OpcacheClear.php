@@ -35,7 +35,8 @@ class OpcacheClear extends Command
 
         // 解析路由协议
         $urlParse = parse_url($url);
-        $url = $urlParse['scheme']."://127.0.0.1".$urlParse['path'];
+        // $url = $urlParse['scheme']."://127.0.0.1".$urlParse['path'];
+        $url = "http://127.0.0.1".$urlParse['path'];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
