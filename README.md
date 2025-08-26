@@ -273,3 +273,38 @@ $templateProcessor->saveAs( storage_path('sample.docx'));
 
 
 ```
+
+### 清除Opcache缓存
+
+1. 注册命令
+
+```php
+// laravel6
+// 在app/Console/Kernel.php的$commands中添加引用
+use Githen\LaravelCommon\Commands\OpcacheClear;
+protected $commands = [
+    OpcacheClear::class,
+];
+
+// laravel11
+// 在bootstrap/app.php文件的withCommands中添加引用
+use Githen\LaravelCommon\Commands\OpcacheClear;
+
+ ->withCommands([
+        OpcacheClear::class,
+    ])
+
+```
+
+2. 部署时执行
+在composer.json中添加更新后执行
+```json
+"scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi",
+            "@php artisan jiaoyu:opcache-clear"
+        ],
+
+    }
+```
