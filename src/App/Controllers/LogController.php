@@ -73,7 +73,7 @@ class LogController extends Controller
         }
 
         // 查看日志
-        $readFile = function ()use($file){
+        $readFile = function () use ($file) {
             $handle = fopen($file, 'r');
             while (feof($handle) === false) {
                 echo fread($handle, 1024 * 1024);;
@@ -141,6 +141,7 @@ class LogController extends Controller
 
         return '<pre>' . implode('<br>', $out);
     }
+
     /**
      * 查看磁盘
      * @param Request $request
@@ -155,6 +156,7 @@ class LogController extends Controller
 
         return '<pre>' . implode('<br>', $out);
     }
+
     /**
      * 修改文件/目录权限
      * @param Request $request
@@ -279,5 +281,30 @@ class LogController extends Controller
             'opcache_status' => opcache_get_status(),
             'uri' => $curRoute->uri(),
         ]);
+    }
+
+    public function check(Request $request)
+    {
+        $data = [];
+        $file = 'app/data/schedule_check.txt';
+        if (!Storage::exists($file)) {
+            Storage::put($file, time(), 'public');
+            $data = [
+                'is_ok' => true,
+                'checked_at' => date('Y-m-d H:i:s'),
+                'last_run_at' => date('Y-m-d H:i:s'),
+            ];
+        } else {
+            $lastModified = Storage::get($file);
+            $diff = time() - $lastModified;
+            $isOk = $diff > 360 ? false : true;
+
+            $data = [
+                'is_ok' => $isOk,
+                'checked_at' => date('Y-m-d H:i:s'),
+                'last_run_at' => date('Y-m-d H:i:s', $lastModified),
+            ];
+        }
+        return response()->json(['code' => '0000', 'message' => 'ok', 'data' => $data]);
     }
 }
