@@ -285,26 +285,13 @@ class LogController extends Controller
 
     public function check(Request $request)
     {
-        $data = [];
+        $lastModified = time();
         $file = 'app/data/schedule_check.txt';
         if (!Storage::exists($file)) {
-            Storage::put($file, time(), 'public');
-            $data = [
-                'is_ok' => true,
-                'checked_at' => date('Y-m-d H:i:s'),
-                'last_run_at' => date('Y-m-d H:i:s'),
-            ];
+            Storage::put($file, $lastModified, 'public');
         } else {
             $lastModified = Storage::get($file);
-            $diff = time() - $lastModified;
-            $isOk = $diff > 360 ? false : true;
-
-            $data = [
-                'is_ok' => $isOk,
-                'checked_at' => date('Y-m-d H:i:s'),
-                'last_run_at' => date('Y-m-d H:i:s', $lastModified),
-            ];
         }
-        return response()->json(['code' => '0000', 'message' => 'ok', 'data' => $data]);
+        return response()->json(['code' => '0000', 'message' => 'ok', 'data' => $lastModified]);
     }
 }
