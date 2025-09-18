@@ -26,15 +26,20 @@ class OpcacheClear extends Command
      */
     public function handle()
     {
-        try {
-            $url = route('opcache.clear');
-        }catch (\Exception $exception){
-            $this->warn($exception->getMessage());
+        $route = Null;
+        foreach (['opcache.clear', 'api.opcache.clear'] as $name){
+            if (Route::has($name)){
+                $route = route($name);
+                break;
+            }
+        }
+        if (!$route){
+            $this->warn('未找到[api.]opcache.clear路由');
             return 0;
         }
 
         // 解析路由协议
-        $urlParse = parse_url($url);
+        $urlParse = parse_url($route);
         // $url = $urlParse['scheme']."://127.0.0.1".$urlParse['path'];
         $url = "http://127.0.0.1".$urlParse['path'];
 

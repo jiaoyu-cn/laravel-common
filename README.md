@@ -278,6 +278,7 @@ $templateProcessor->saveAs( storage_path('sample.docx'));
 1. 添加清理路由
 ```php
 //路由名称及协议不可变
+// 路由名称只可以为opcache.clear或 api.opcache.clear
 Route::get('opcache/clear', '\\Githen\\LaravelCommon\\App\\Controllers\\OpcacheController@clear')->name('opcache.clear');
 ```
 2.注册命令
@@ -299,6 +300,16 @@ use Githen\LaravelCommon\Commands\OpcacheClear;
     ])
 
 ```
+3. 项目根目录添加`opcache.sh`脚本，以执行清理操作
+
+```shell
+#!/bin/bash
+cd "$(dirname "$0")"
+
+nohup bash -c "sleep 10; php artisan jiaoyu:opcache-clear" >> storage/logs/opcache.log 2>&1 &
+echo $! > storage/logs/opcache.pid
+disown
+```
 
 3. 部署时执行
 在composer.json中添加执行脚本,Host为本项目的名称，`http://127.0.0.1` 域名不可替换,协议根据实际情况调整
@@ -307,7 +318,7 @@ use Githen\LaravelCommon\Commands\OpcacheClear;
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan jiaoyu:opcache-clear"
+            "@bash opcache.sh"
         ]
     }
 ```
