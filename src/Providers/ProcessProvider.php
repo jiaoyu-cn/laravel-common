@@ -158,8 +158,8 @@ class ProcessProvider extends ServiceProvider
                 $text .= '**告警时间:** '.date('Y-m-d H:i:s').PHP_EOL.PHP_EOL;
 
                 $result =  app('jiaoyu.common.dingding', ['token' => $this->token, 'secret' => $this->secret])->markdown('证书即将过期', $text, true);
-                if($result['errcode']){
-                    return $this->message($result['errcode'], $result['message']);
+                if($result['code']){
+                    return $this->message($result['code'], $result['message']);
                 }
             }
         }

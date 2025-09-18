@@ -3,6 +3,7 @@
 namespace Githen\LaravelCommon\Providers;
 
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class DingdingProvider extends ServiceProvider
@@ -36,6 +37,10 @@ class DingdingProvider extends ServiceProvider
             $this->secret = $params['secret'] ?? '';
             return $this;
         });
+
+        //计划任务是否执行检测
+        Route::middleware('web')->get('jiaoyu/log/check', '\Githen\LaravelCommon\App\Controllers\LogController@check')
+            ->name('jiaoyu.log.check');
     }
 
     /**
