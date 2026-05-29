@@ -64,6 +64,10 @@ class DingdingLogHandler extends AbstractProcessingHandler
         $content['markdown']['text'] = '#### 【'.($this->levels[$record['level_name']]??'未知').'】服务告警 - '.config('app.env').PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '------'.PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '**项目名称:** '.config('settings.name').PHP_EOL.PHP_EOL;
+        if ($vip = config('settings.vip_name', '')){
+            $content['markdown']['text'] .= '**客户名称:** '.$vip.PHP_EOL.PHP_EOL;    
+        }
+        
         $content['markdown']['text'] .= '**域名:** '.config('app.url').PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '**服务器IP:** '.($ip?:'未知').PHP_EOL.PHP_EOL;
         $content['markdown']['text'] .= '**告警等级:** '.$record['level_name'].PHP_EOL.PHP_EOL;
