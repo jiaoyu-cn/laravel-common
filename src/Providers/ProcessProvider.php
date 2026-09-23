@@ -110,8 +110,8 @@ class ProcessProvider extends ServiceProvider
     {
 
         // 钉钉配置
-        $this->token = $params['token'] ?? config('logging.channels.dingding.with.token');
-        $this->secret = $params['secret'] ?? config('logging.channels.dingding.with.secret');
+        $this->token = $param['token'] ?? config('logging.channels.dingding.with.token');
+        $this->secret = $param['secret'] ?? config('logging.channels.dingding.with.secret');
 
         if (!is_file($param['dir'])){
             return $this->message(1, '证书地址错误');
